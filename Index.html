@@ -15,10 +15,10 @@
    Weiß/Grau: Text und Flächen
    ============================================= */
 :root {
-  --bg-1:    #111318;   /* dunkelster Hintergrund */
-  --bg-2:    #181b22;   /* Sektionen mittel */
-  --bg-3:    #1e2130;   /* Sektionen hell */
-  --bg-card: #20232e;   /* Karten-Hintergrund */
+  --bg-1:    #181a22;   /* dunkelster Hintergrund */
+  --bg-2:    #1e2130;   /* Sektionen mittel */
+  --bg-3:    #252838;   /* Sektionen hell */
+  --bg-card: #272a38;   /* Karten-Hintergrund */
   --border:  rgba(255,255,255,.08);
   --blue:    #1e44ff;   /* Hauptblau */
   --blue-d:  #1530d4;
@@ -200,6 +200,7 @@ nav.scrolled {
   opacity:0; animation:fadeUp .7s .3s forwards;
 }
 .hero-eyebrow::before { content:''; width:28px; height:2px; background:var(--yellow); }
+@media(max-width:768px) { .hero-eyebrow { display:none !important; } }
 
 .hero-title {
   font-family:'Barlow Condensed',sans-serif;
@@ -219,6 +220,13 @@ nav.scrolled {
 .hero-sub {
   font-size:.94rem; font-weight:300; color:rgba(242,243,246,.5);
   letter-spacing:.08em; text-transform:uppercase;
+  text-decoration:none !important;
+  pointer-events:none;
+}
+.hero-sub a, .hero-sub * {
+  text-decoration:none !important;
+  color:inherit !important;
+  pointer-events:none;
 }
 .hero-cta {
   display:inline-flex; align-items:center; gap:12px;
@@ -264,7 +272,7 @@ nav.scrolled {
 }
 .ticker-track {
   display:flex; white-space:nowrap;
-  animation:ticker 22s linear infinite;
+  animation:ticker 12s linear infinite;
 }
 .ticker-item {
   font-family:'Barlow Condensed',sans-serif;
@@ -651,13 +659,7 @@ section { padding:96px 6%; }
   background:var(--bg-3);
   display:grid; grid-template-columns:1fr 1.15fr; gap:72px; align-items:center;
 }
-.kontakt-form-strip::before {
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background-image:repeating-linear-gradient(
-    0deg, rgba(30,68,255,.02) 0px, rgba(30,68,255,.02) 1px,
-    transparent 1px, transparent 44px
-  );
-}
+.kontakt-form-strip::before { display:none; }
 .form-intro { position:relative; z-index:1; }
 .form-intro .sec-title { font-size:clamp(2rem,4vw,3.2rem); margin-bottom:12px; }
 .form-intro p { font-size:.92rem; font-weight:300; color:rgba(242,243,246,.5); line-height:1.8; }
@@ -810,7 +812,7 @@ footer::before {
       <span class="t-outline">Marken</span>
     </h1>
     <div class="hero-meta">
-      <p class="hero-sub">Reparatur &nbsp;·&nbsp; Service &nbsp;·&nbsp; Tuning</p>
+      <p class="hero-sub">Reparatur &nbsp;&#183;&nbsp; Service &nbsp;&#183;&nbsp; &#84;uning</p>
       <a href="#kontakt" class="hero-cta">Termin vereinbaren</a>
     </div>
   </div>
@@ -854,7 +856,6 @@ footer::before {
       </div>
     </div>
     <div class="ueber-text-side rev-r">
-      <div class="ueber-number">01</div>
       <div class="sec-eyebrow">Über uns</div>
       <h2 class="sec-title">Die <span>Meister</span><br>aller Marken</h2>
       <p class="sec-body" style="margin-bottom:16px;">Willkommen bei KFZ-Technik Fritsch GmbH – Ihrer Anlaufstelle für professionelle Fahrzeugreparaturen und umfassenden Service in St. Michael in der Obersteiermark.</p>
@@ -1046,19 +1047,18 @@ footer::before {
   function draw(ts){
     const t = ts * 0.001;
     ctx.clearRect(0,0,W,H);
-    ctx.fillStyle = '#111318';
+    ctx.fillStyle = '#181a22';
     ctx.fillRect(0,0,W,H);
 
     orbs.forEach(o => {
       const drift = Math.sin(t * o.spd * 1000 + o.ph);
       const cx = W * (o.x + drift * 0.06);
       const cy = H * (o.y + Math.cos(t * o.spd * 800 + o.ph) * 0.07)
-                 - scrollY * 0.14 * o.y;
+                 - scrollY * 0.20 * o.y;
       const rad = Math.min(W, H) * o.r;
       const g = ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
       const [r,gv,b] = o.color;
-      /* Gelb-Orb noch dezenter */
-      const alpha = (r===245) ? 0.10 : 0.20;
+      const alpha = (r===245) ? 0.12 : 0.26;
       g.addColorStop(0,  `rgba(${r},${gv},${b},${alpha})`);
       g.addColorStop(.45,`rgba(${r},${gv},${b},${alpha*.4})`);
       g.addColorStop(1,  `rgba(${r},${gv},${b},0)`);
@@ -1066,13 +1066,14 @@ footer::before {
       ctx.fillStyle = g; ctx.fill();
     });
 
-    /* Gitter */
+    /* Gitter – bewegt sich mit dem Scroll */
     const gs = 64;
-    const op = 0.025 + Math.sin(t * .5) * 0.006;
+    const scrollOffset = scrollY * 0.3;
+    const op = 0.03 + Math.sin(t * .5) * 0.007;
     ctx.strokeStyle = `rgba(30,68,255,${op})`;
     ctx.lineWidth = 1;
-    for(let x=0;x<W;x+=gs){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
-    for(let y=(scrollY%gs);y<H;y+=gs){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
+    for(let x=(scrollY*.1)%gs;x<W;x+=gs){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
+    for(let y=(scrollOffset%gs);y<H;y+=gs){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
 
     requestAnimationFrame(draw);
   }
