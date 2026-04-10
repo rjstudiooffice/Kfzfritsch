@@ -328,7 +328,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
     <a href="#team"    onclick="closeDrawer()">Team</a>
     <a href="#kontakt" onclick="closeDrawer()">Kontakt</a>
   </div>
-  <a href="#kontakt" class="drawer-cta" onclick="closeDrawer(); setTimeout(()=>{ document.getElementById('kontakt').scrollIntoView({behavior:'smooth'}); }, 380);">Termin buchen</a>
+  <a href="#kontakt" class="drawer-cta" onclick="closeDrawer(); setTimeout(()=>{ document.getElementById('termin-buchen').scrollIntoView({behavior:'smooth'}); }, 380);">Termin buchen</a>
 </div>
 
 <!-- HERO -->
@@ -504,7 +504,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       </div>
     </div>
   </div>
-  <div class="kontakt-form-strip">
+  <div class="kontakt-form-strip" id="termin-buchen">
     <div class="form-intro rev-l">
       <div class="sec-eyebrow">Kontakt</div>
       <h2 class="sec-title">Termin <span>buchen</span></h2>
