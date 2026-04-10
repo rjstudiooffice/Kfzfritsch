@@ -27,8 +27,6 @@ body{font-family:'Barlow',sans-serif;background:var(--bg-1);color:var(--white);o
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg-2);}
 ::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
-
-/* CANVAS */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
 nav,section,footer,.ticker-wrap{position:relative;z-index:1;}
 
@@ -67,7 +65,6 @@ nav.scrolled{background:rgba(17,19,24,.96);backdrop-filter:blur(20px);padding:10
 .t-white{color:var(--white);display:block;}
 .t-outline{display:block;-webkit-text-stroke:2px rgba(242,243,246,.55);color:transparent;}
 .hero-meta{display:flex;align-items:center;gap:36px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .7s forwards;}
-/* Tuning-Fix: T+uning in Spans aufgeteilt, kein Link möglich */
 .hero-sub,.hero-sub *{font-size:.94rem;font-weight:300;color:rgba(242,243,246,.5)!important;letter-spacing:.08em;text-transform:uppercase;pointer-events:none!important;text-decoration:none!important;border-bottom:none!important;outline:none!important;}
 .hero-cta{display:inline-flex;align-items:center;gap:12px;background:var(--blue);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:.84rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:14px 30px;transition:background .25s,gap .25s,box-shadow .25s;}
 .hero-cta::after{content:'→';transition:transform .25s;}
@@ -78,7 +75,7 @@ nav.scrolled{background:rgba(17,19,24,.96);backdrop-filter:blur(20px);padding:10
 .sdot.active{background:var(--yellow);transform:scale(1.4);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
 
-/* TICKER – nahtloser Loop, Inhalt 2× */
+/* TICKER */
 .ticker-wrap{background:var(--blue);overflow:hidden;padding:11px 0;border-top:2px solid var(--yellow);border-bottom:2px solid var(--yellow);box-shadow:0 0 32px rgba(30,68,255,.3);}
 .ticker-track{display:flex;white-space:nowrap;width:max-content;animation:ticker 20s linear infinite;will-change:transform;}
 .ticker-item{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding:0 48px;flex-shrink:0;display:inline-flex;align-items:center;gap:16px;text-decoration:none!important;pointer-events:none;}
@@ -172,7 +169,6 @@ section{padding:96px 6%;}
 .k-list{margin-top:24px;display:flex;flex-direction:column;gap:15px;}
 .k-row{display:flex;align-items:center;gap:14px;}
 .k-ico{width:40px;height:40px;background:rgba(0,0,0,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-/* Kein Link, keine Unterstreichung bei Labels und Werten */
 .k-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1px;}
 .k-lbl,.k-lbl *{text-decoration:none!important;border-bottom:none!important;pointer-events:none!important;-webkit-text-decoration:none!important;}
 .k-val{font-size:.9rem;font-weight:400;color:rgba(255,255,255,.88);line-height:1.5;}
@@ -198,30 +194,36 @@ section{padding:96px 6%;}
 .f-inp:focus,.f-txt:focus{border-color:var(--yellow);background:rgba(245,196,0,.04);}
 .f-txt{resize:vertical;min-height:100px;}
 
-/* MEHRFACHAUSWAHL ANLIEGEN */
-.f-check-group{
-  display:flex;flex-direction:column;gap:0;
-  background:rgba(255,255,255,.05);
-  border-bottom:1px solid rgba(30,68,255,.3);
-  transition:border-color .25s;
+/* CUSTOM DROPDOWN MEHRFACHAUSWAHL */
+.f-multi-wrap{position:relative;}
+.f-multi-trigger{
+  width:100%;background:rgba(255,255,255,.05);
+  border:none;border-bottom:1px solid rgba(30,68,255,.3);
+  color:rgba(242,243,246,.75);padding:12px 15px;
+  font-family:'Barlow',sans-serif;font-size:.9rem;font-weight:300;
+  text-align:left;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  outline:none;transition:border-color .25s,background .25s;
 }
-.f-check-group:focus-within{border-color:var(--yellow);}
-.f-check-item{
+.f-multi-trigger:hover,.f-multi-trigger.open{border-color:var(--yellow);background:rgba(245,196,0,.04);}
+.f-multi-trigger-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.f-multi-arrow{font-size:.55rem;color:rgba(242,243,246,.4);transition:transform .25s;flex-shrink:0;margin-left:8px;}
+.f-multi-trigger.open .f-multi-arrow{transform:rotate(180deg);}
+.f-multi-dropdown{
+  position:absolute;top:100%;left:0;right:0;z-index:50;
+  background:var(--bg-3);border:1px solid rgba(30,68,255,.3);border-top:none;
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+}
+.f-multi-dropdown.open{max-height:320px;overflow-y:auto;}
+.f-multi-opt{
   display:flex;align-items:center;gap:12px;
-  padding:10px 15px;
-  cursor:pointer;
-  transition:background .2s;
-  user-select:none;
+  padding:11px 15px;cursor:pointer;
+  transition:background .2s;user-select:none;
 }
-.f-check-item:hover{background:rgba(255,255,255,.06);}
-.f-check-item input[type="checkbox"]{
-  width:16px;height:16px;
-  accent-color:var(--yellow);
-  cursor:pointer;flex-shrink:0;
-}
-.f-check-item span{font-family:'Barlow',sans-serif;font-size:.88rem;font-weight:300;color:rgba(242,243,246,.75);}
-.f-check-item:first-child{border-top:none;}
-.f-check-item + .f-check-item{border-top:1px solid rgba(255,255,255,.05);}
+.f-multi-opt:hover{background:rgba(255,255,255,.06);}
+.f-multi-opt + .f-multi-opt{border-top:1px solid rgba(255,255,255,.05);}
+.f-multi-opt input[type="checkbox"]{width:15px;height:15px;accent-color:var(--yellow);cursor:pointer;flex-shrink:0;}
+.f-multi-opt span{font-family:'Barlow',sans-serif;font-size:.88rem;font-weight:300;color:rgba(242,243,246,.75);}
 
 .f-btn{align-self:flex-start;background:var(--yellow);color:var(--bg-1);border:none;padding:14px 34px;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .25s,box-shadow .25s,gap .25s;}
 .f-btn::after{content:'→';}
@@ -262,7 +264,6 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
 @media(max-width:600px){
   .hero-title{font-size:clamp(2.6rem,10vw,4.5rem);}
   .hero-meta{flex-direction:column;align-items:flex-start;gap:18px;}
-  /* Mobile Foto-Fokuspunkte */
   .slide:nth-child(1){background-position:center top !important;}
   .slide:nth-child(2){background-position:70% center !important;}
   .slide:nth-child(3){background-position:center center !important;}
@@ -284,9 +285,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
 
 <!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero">
-    <img src="KFZ.png" alt="KFZ-Technik Fritsch">
-  </a>
+  <a class="nav-logo" href="#hero"><img src="KFZ.png" alt="KFZ-Technik Fritsch"></a>
   <ul class="nav-links">
     <li><a href="#ueber">Über uns</a></li>
     <li><a href="#service">Service</a></li>
@@ -330,7 +329,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
   </div>
 </section>
 
-<!-- TICKER – Inhalt 2× für nahtlosen Loop -->
+<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item">Reifen</span>
@@ -354,9 +353,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
 <section id="ueber">
   <div class="ueber-inner">
     <div class="ueber-photo-side rev-l">
-      <div class="ueber-photo-main">
-        <img src="Team.png" alt="Team KFZ-Technik Fritsch">
-      </div>
+      <div class="ueber-photo-main"><img src="Team.png" alt="Team KFZ-Technik Fritsch"></div>
     </div>
     <div class="ueber-text-side rev-r">
       <div class="sec-eyebrow">Über uns</div>
@@ -454,18 +451,9 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       <div class="sec-eyebrow">Finden Sie uns</div>
       <h2 class="sec-title">Wo wir <span>sind</span></h2>
       <div class="k-list">
-        <div class="k-row">
-          <div class="k-ico">📍</div>
-          <div><div class="k-lbl">Adresse</div><div class="k-val">Bundesstraße 19, 8770 St. Michael i.O.</div></div>
-        </div>
-        <div class="k-row">
-          <div class="k-ico">📞</div>
-          <div><div class="k-lbl">Telefon</div><div class="k-val">+43 664 950 7800</div></div>
-        </div>
-        <div class="k-row">
-          <div class="k-ico">✉️</div>
-          <div><div class="k-lbl">E-Mail</div><div class="k-val">office@kfz-fritsch.at</div></div>
-        </div>
+        <div class="k-row"><div class="k-ico">📍</div><div><div class="k-lbl">Adresse</div><div class="k-val">Bundesstraße 19, 8770 St. Michael i.O.</div></div></div>
+        <div class="k-row"><div class="k-ico">📞</div><div><div class="k-lbl">Telefon</div><div class="k-val">+43 664 950 7800</div></div></div>
+        <div class="k-row"><div class="k-ico">✉️</div><div><div class="k-lbl">E-Mail</div><div class="k-val">office@kfz-fritsch.at</div></div></div>
       </div>
       <div class="oeffnung">
         <div class="oeffnung-title">Öffnungszeiten</div>
@@ -480,7 +468,6 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       </div>
     </div>
   </div>
-
   <div class="kontakt-form-strip">
     <div class="form-intro rev-l">
       <div class="sec-eyebrow">Kontakt</div>
@@ -494,42 +481,24 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       </div>
       <div class="f-grp"><label class="f-lbl">Telefon / E-Mail</label><input type="text" class="f-inp" placeholder="+43 …" autocomplete="off"></div>
 
-      <!-- MEHRFACHAUSWAHL ANLIEGEN -->
+      <!-- CUSTOM DROPDOWN MEHRFACHAUSWAHL -->
       <div class="f-grp">
         <label class="f-lbl">Anliegen (Mehrfachauswahl möglich)</label>
-        <div class="f-check-group">
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Wartung & Service">
-            <span>Wartung &amp; Service</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Reifen">
-            <span>Reifen</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="57a Überprüfung (Pickerl)">
-            <span>57a Überprüfung (Pickerl)</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Karosserie & Glas">
-            <span>Karosserie &amp; Glas</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Klimaanlage">
-            <span>Klimaanlage</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Fahrwerk & Antrieb">
-            <span>Fahrwerk &amp; Antrieb</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Diagnose & Codierung">
-            <span>Diagnose &amp; Codierung</span>
-          </label>
-          <label class="f-check-item">
-            <input type="checkbox" name="anliegen" value="Sonstiges">
-            <span>Sonstiges</span>
-          </label>
+        <div class="f-multi-wrap">
+          <button type="button" class="f-multi-trigger" id="anliegenTrigger">
+            <span class="f-multi-trigger-text" id="anliegenText">Bitte wählen …</span>
+            <span class="f-multi-arrow">▼</span>
+          </button>
+          <div class="f-multi-dropdown" id="anliegenDropdown">
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Wartung & Service"><span>Wartung &amp; Service</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Reifen"><span>Reifen</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="57a Überprüfung (Pickerl)"><span>57a Überprüfung (Pickerl)</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Karosserie & Glas"><span>Karosserie &amp; Glas</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Klimaanlage"><span>Klimaanlage</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Fahrwerk & Antrieb"><span>Fahrwerk &amp; Antrieb</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Diagnose & Codierung"><span>Diagnose &amp; Codierung</span></label>
+            <label class="f-multi-opt"><input type="checkbox" name="anliegen" value="Sonstiges"><span>Sonstiges</span></label>
+          </div>
         </div>
       </div>
 
@@ -564,11 +533,11 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
   window.addEventListener('resize', resize);
   window.addEventListener('scroll', () => { scrollY = window.scrollY; });
   const orbs = [
-    { x:.78, y:.22, r:.50, color:[30,68,255],  spd:0.0008, ph:0   },
-    { x:.12, y:.80, r:.40, color:[20,48,200],  spd:0.0006, ph:2.1 },
-    { x:.50, y:.50, r:.20, color:[245,196,0],  spd:0.0010, ph:4.2 },
-    { x:.88, y:.75, r:.30, color:[30,68,255],  spd:0.0007, ph:1.1 },
-    { x:.04, y:.18, r:.22, color:[40,80,220],  spd:0.0009, ph:3.3 },
+    { x:.78, y:.22, r:.50, color:[30,68,255], spd:0.0008, ph:0   },
+    { x:.12, y:.80, r:.40, color:[20,48,200], spd:0.0006, ph:2.1 },
+    { x:.50, y:.50, r:.20, color:[245,196,0], spd:0.0010, ph:4.2 },
+    { x:.88, y:.75, r:.30, color:[30,68,255], spd:0.0007, ph:1.1 },
+    { x:.04, y:.18, r:.22, color:[40,80,220], spd:0.0009, ph:3.3 },
   ];
   function draw(ts){
     const t = ts * 0.001;
@@ -628,6 +597,35 @@ timer = setInterval(() => goSlide((cur+1) % slides.length), 5500);
 /* NAV */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+/* CUSTOM DROPDOWN MEHRFACHAUSWAHL */
+(function(){
+  const trigger  = document.getElementById('anliegenTrigger');
+  const dropdown = document.getElementById('anliegenDropdown');
+  const label    = document.getElementById('anliegenText');
+  const boxes    = dropdown.querySelectorAll('input[type="checkbox"]');
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    trigger.classList.toggle('open');
+    dropdown.classList.toggle('open');
+  });
+
+  document.addEventListener('click', e => {
+    if(!trigger.contains(e.target) && !dropdown.contains(e.target)){
+      trigger.classList.remove('open');
+      dropdown.classList.remove('open');
+    }
+  });
+
+  function updateLabel(){
+    const sel = [...boxes].filter(b => b.checked).map(b => b.value);
+    if(sel.length === 0)      label.textContent = 'Bitte wählen …';
+    else if(sel.length === 1) label.textContent = sel[0];
+    else                      label.textContent = sel.length + ' Anliegen ausgewählt';
+  }
+  boxes.forEach(b => b.addEventListener('change', updateLabel));
+})();
 
 /* REVEAL */
 const els = document.querySelectorAll('.rev,.rev-l,.rev-r,.rev-s');
