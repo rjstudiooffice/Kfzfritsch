@@ -35,32 +35,8 @@ nav,section,footer,.ticker-wrap{position:relative;z-index:1;}
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:12px 6%;display:flex;justify-content:space-between;align-items:center;transition:background .4s,padding .3s;}
 nav.scrolled{background:rgba(17,19,24,.96);backdrop-filter:blur(20px);padding:10px 6%;border-bottom:1px solid var(--border);box-shadow:0 4px 32px rgba(0,0,0,.4);}
-
-/* LOGO – groß, kein Rahmen, transparenter Hintergrund */
-.nav-logo{
-  height:90px !important;
-  width:auto !important;
-  display:flex !important;
-  align-items:center !important;
-  text-decoration:none !important;
-  background:none !important;
-  border:none !important;
-  box-shadow:none !important;
-  padding:0 !important;
-  outline:none !important;
-}
-.nav-logo img{
-  height:90px !important;
-  width:auto !important;
-  max-height:90px !important;
-  object-fit:contain !important;
-  display:block !important;
-  background:none !important;
-  border:none !important;
-  border-radius:0 !important;
-  box-shadow:none !important;
-}
-
+.nav-logo{height:90px!important;width:auto!important;display:flex!important;align-items:center!important;text-decoration:none!important;background:none!important;border:none!important;box-shadow:none!important;padding:0!important;outline:none!important;}
+.nav-logo img{height:90px!important;width:auto!important;max-height:90px!important;object-fit:contain!important;display:block!important;background:none!important;border:none!important;border-radius:0!important;box-shadow:none!important;}
 .nav-links{display:flex;gap:34px;list-style:none;}
 .nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,243,246,.5);text-decoration:none;transition:color .2s;position:relative;}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--yellow);transition:width .25s;}
@@ -91,7 +67,7 @@ nav.scrolled{background:rgba(17,19,24,.96);backdrop-filter:blur(20px);padding:10
 .t-white{color:var(--white);display:block;}
 .t-outline{display:block;-webkit-text-stroke:2px rgba(242,243,246,.55);color:transparent;}
 .hero-meta{display:flex;align-items:center;gap:36px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .7s forwards;}
-/* Tuning-Fix: <span style="font-size:inherit;color:inherit;letter-spacing:inherit;text-decoration:none!important;border-bottom:none!important;pointer-events:none;">T</span><span style="font-size:inherit;color:inherit;letter-spacing:inherit;text-decoration:none!important;border-bottom:none!important;pointer-events:none;">uning</span> + pointer-events:none verhindert Auto-Link */
+/* Tuning-Fix */
 .hero-sub,.hero-sub *{font-size:.94rem;font-weight:300;color:rgba(242,243,246,.5)!important;letter-spacing:.08em;text-transform:uppercase;pointer-events:none!important;text-decoration:none!important;border-bottom:none!important;outline:none!important;}
 .hero-cta{display:inline-flex;align-items:center;gap:12px;background:var(--blue);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:.84rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:14px 30px;transition:background .25s,gap .25s,box-shadow .25s;}
 .hero-cta::after{content:'→';transition:transform .25s;}
@@ -102,12 +78,40 @@ nav.scrolled{background:rgba(17,19,24,.96);backdrop-filter:blur(20px);padding:10
 .sdot.active{background:var(--yellow);transform:scale(1.4);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
 
-/* TICKER */
+/* TICKER
+   Nahtloser Loop: Inhalt 2x vorhanden, Animation läuft von 0% bis -50%.
+   will-change:transform verhindert sichtbaren Sprung.
+   Keine Pause, kein Neustart erkennbar.
+*/
 .ticker-wrap{background:var(--blue);overflow:hidden;padding:11px 0;border-top:2px solid var(--yellow);border-bottom:2px solid var(--yellow);box-shadow:0 0 32px rgba(30,68,255,.3);}
-.ticker-track{display:flex;white-space:nowrap;animation:ticker 7s linear infinite;}
-.ticker-item{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding:0 48px;flex-shrink:0;display:flex;align-items:center;gap:16px;}
+.ticker-track{
+  display:flex;
+  white-space:nowrap;
+  width:max-content;
+  animation:ticker 20s linear infinite;
+  will-change:transform;
+}
+/* 57a-Fix: pointer-events + text-decoration auf alle ticker-items */
+.ticker-item{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.8rem;font-weight:800;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--white);
+  padding:0 48px;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:16px;
+  text-decoration:none!important;
+  pointer-events:none;
+}
+.ticker-item *{
+  color:var(--white)!important;
+  text-decoration:none!important;
+  border-bottom:none!important;
+  pointer-events:none!important;
+}
 .ticker-item::after{content:'◆';font-size:.45rem;color:var(--yellow);opacity:.8;}
-@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes ticker{
+  0%  { transform:translateX(0); }
+  100%{ transform:translateX(-50%); }
+}
 
 /* SECTION COMMONS */
 section{padding:96px 6%;}
@@ -197,7 +201,7 @@ section{padding:96px 6%;}
 .k-row{display:flex;align-items:center;gap:14px;}
 .k-ico{width:40px;height:40px;background:rgba(0,0,0,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;}
 .k-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1px;}
-.k-val{font-size:.9rem;font-weight:400;color:rgba(255,255,255,.88);line-height:1.5;}
+.k-val{font-size:.9rem;font-weight:400;color:rgba(255,255,255,.88);line-height:1.5;}.k-val a{color:rgba(255,255,255,.88)!important;text-decoration:none!important;}
 .oeffnung{margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);}
 .oeffnung-title{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.48);margin-bottom:12px;}
 .oeffnung-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08);}
@@ -258,6 +262,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
 @media(max-width:600px){
   .hero-title{font-size:clamp(2.6rem,10vw,4.5rem);}
   .hero-meta{flex-direction:column;align-items:flex-start;gap:18px;}
+  /* Mobile Foto-Fokuspunkte */
   .slide:nth-child(1){background-position:center top !important;}
   .slide:nth-child(2){background-position:70% center !important;}
   .slide:nth-child(3){background-position:center center !important;}
@@ -312,7 +317,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       <span class="t-outline">Marken</span>
     </h1>
     <div class="hero-meta">
-      <p class="hero-sub">Reparatur &nbsp;&#183;&nbsp; Service &nbsp;&#183;&nbsp; <span style="font-size:inherit;color:inherit;letter-spacing:inherit;text-decoration:none!important;border-bottom:none!important;pointer-events:none;">T</span><span style="font-size:inherit;color:inherit;letter-spacing:inherit;text-decoration:none!important;border-bottom:none!important;pointer-events:none;">uning</span></p>
+      <p class="hero-sub">Reparatur &nbsp;&#183;&nbsp; Service &nbsp;&#183;&nbsp; <span style="pointer-events:none;text-decoration:none!important;border-bottom:none!important;color:inherit;">T</span><span style="pointer-events:none;text-decoration:none!important;border-bottom:none!important;color:inherit;">uning</span></p>
       <a href="#kontakt" class="hero-cta">Termin vereinbaren</a>
     </div>
   </div>
@@ -325,18 +330,21 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
   </div>
 </section>
 
-<!-- TICKER -->
+<!-- TICKER
+     Inhalt ist exakt 2× vorhanden → Animation translateX(0) bis translateX(-50%)
+     ergibt nahtlosen Loop ohne sichtbaren Sprung.
+-->
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item">Reifen</span>
-    <span class="ticker-item">57a Überprüfung</span>
+    <span class="ticker-item">&#53;7a Überprüfung</span>
     <span class="ticker-item">Karosserie &amp; Glas</span>
     <span class="ticker-item">Klimaanlage</span>
     <span class="ticker-item">Fahrwerk &amp; Antrieb</span>
     <span class="ticker-item">Diagnose &amp; Codierung</span>
     <span class="ticker-item">Wartung &amp; Service</span>
     <span class="ticker-item">Reifen</span>
-    <span class="ticker-item">57a Überprüfung</span>
+    <span class="ticker-item">&#53;7a Überprüfung</span>
     <span class="ticker-item">Karosserie &amp; Glas</span>
     <span class="ticker-item">Klimaanlage</span>
     <span class="ticker-item">Fahrwerk &amp; Antrieb</span>
@@ -374,53 +382,41 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
     <h2 class="sec-title">Unser <span>Service</span></h2>
   </div>
   <div class="service-grid">
-
-    <!-- Spalte 1, Reihen 1–3 | hochformat min. 700×900px -->
     <div class="svc svc-tall rev-s">
       <div class="svc-ph"><img src="Service.png" alt="Wartung und Service"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Wartung &amp;<br>Service</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
-    <!-- Reihe 1 rechts | min. 500×280px -->
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Reifen.png" alt="Reifen"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Reifen</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Pickerl.png" alt="57a Überprüfung"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">57a<br>Überprüfung</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
-    <!-- Reihe 2 rechts | min. 500×280px -->
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Klima.png" alt="Klimaanlage"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Klimaanlage</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Antrieb.png" alt="Fahrwerk und Antrieb"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Fahrwerk &amp;<br>Antrieb</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
-    <!-- Reihe 3 rechts | min. 500×280px -->
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Karosserie.png" alt="Karosserie und Glas"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Karosserie &amp;<br>Glas</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
     <div class="svc rev-s">
       <div class="svc-ph"><img src="Codierung.png" alt="Diagnose und Codierung"></div>
       <div class="svc-dark"></div><div class="svc-bdr"></div>
       <div class="svc-lbl"><div class="svc-name">Diagnose &amp;<br>Codierung</div><div class="svc-arr">Mehr erfahren</div></div>
     </div>
-
   </div>
 </section>
 
@@ -435,55 +431,22 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
     <p class="team-header-sub rev-r">Kompetenz, Teamgeist und Leidenschaft zum Fahrzeug.</p>
   </div>
   <div class="team-grid">
-
     <div class="tc rev">
-      <div class="tc-photo">
-        <img src="Hanns.png" alt="Hanns Fritsch">
-        <div class="tc-grad"></div><div class="tc-line"></div>
-      </div>
-      <div class="tc-info">
-        <div class="tc-name">Hanns Fritsch</div>
-        <div class="tc-role">Inhaber &amp; Geschäftsführer</div>
-        <div class="tc-quote">„Wir legen großen Wert auf die Zufriedenheit unserer Kunden."</div>
-      </div>
+      <div class="tc-photo"><img src="Hanns.png" alt="Hanns Fritsch"><div class="tc-grad"></div><div class="tc-line"></div></div>
+      <div class="tc-info"><div class="tc-name">Hanns Fritsch</div><div class="tc-role">Inhaber &amp; Geschäftsführer</div><div class="tc-quote">„Wir legen großen Wert auf die Zufriedenheit unserer Kunden."</div></div>
     </div>
-
     <div class="tc rev">
-      <div class="tc-photo">
-        <img src="Stefan.png" alt="Stefan Franischen">
-        <div class="tc-grad"></div><div class="tc-line"></div>
-      </div>
-      <div class="tc-info">
-        <div class="tc-name">Stefan Franischen</div>
-        <div class="tc-role">Inhaber &amp; Geschäftsführer</div>
-        <div class="tc-quote">„Unsere Kunden können mit jedem Auto zu uns kommen."</div>
-      </div>
+      <div class="tc-photo"><img src="Stefan.png" alt="Stefan Franischen"><div class="tc-grad"></div><div class="tc-line"></div></div>
+      <div class="tc-info"><div class="tc-name">Stefan Franischen</div><div class="tc-role">Inhaber &amp; Geschäftsführer</div><div class="tc-quote">„Unsere Kunden können mit jedem Auto zu uns kommen."</div></div>
     </div>
-
     <div class="tc rev">
-      <div class="tc-photo">
-        <img src="Manuel.png" alt="Manuel Ochabauer">
-        <div class="tc-grad"></div><div class="tc-line"></div>
-      </div>
-      <div class="tc-info">
-        <div class="tc-name">Manuel Ochabauer</div>
-        <div class="tc-role">KFZ-Techniker</div>
-        <div class="tc-quote">„Teamwork wird hier groß geschrieben."</div>
-      </div>
+      <div class="tc-photo"><img src="Manuel.png" alt="Manuel Ochabauer"><div class="tc-grad"></div><div class="tc-line"></div></div>
+      <div class="tc-info"><div class="tc-name">Manuel Ochabauer</div><div class="tc-role">KFZ-Techniker</div><div class="tc-quote">„Teamwork wird hier groß geschrieben."</div></div>
     </div>
-
     <div class="tc rev">
-      <div class="tc-photo">
-        <img src="Leon.png" alt="Leon Schweighart">
-        <div class="tc-grad"></div><div class="tc-line"></div>
-      </div>
-      <div class="tc-info">
-        <div class="tc-name">Leon Schweighart</div>
-        <div class="tc-role">Lehrling KFZ-Techniker</div>
-        <div class="tc-quote">„Etwas zu erlernen, das jeden Tag gebraucht wird."</div>
-      </div>
+      <div class="tc-photo"><img src="Leon.png" alt="Leon Schweighart"><div class="tc-grad"></div><div class="tc-line"></div></div>
+      <div class="tc-info"><div class="tc-name">Leon Schweighart</div><div class="tc-role">Lehrling KFZ-Techniker</div><div class="tc-quote">„Etwas zu erlernen, das jeden Tag gebraucht wird."</div></div>
     </div>
-
   </div>
 </section>
 
@@ -494,18 +457,9 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
       <div class="sec-eyebrow">Finden Sie uns</div>
       <h2 class="sec-title">Wo wir <span>sind</span></h2>
       <div class="k-list">
-        <div class="k-row">
-          <div class="k-ico">📍</div>
-          <div><div class="k-lbl">Adresse</div><div class="k-val">Bundesstraße 19, 8770 St. Michael i.O.</div></div>
-        </div>
-        <div class="k-row">
-          <div class="k-ico">📞</div>
-          <div><div class="k-lbl">Telefon</div><div class="k-val">+43 664 950 7800</div></div>
-        </div>
-        <div class="k-row">
-          <div class="k-ico">✉️</div>
-          <div><div class="k-lbl">E-Mail</div><div class="k-val">office@kfz-fritsch.at</div></div>
-        </div>
+        <div class="k-row"><div class="k-ico">📍</div><div><div class="k-lbl">Adresse</div><div class="k-val">Bundesstraße 19, 8770 St. Michael i.O.</div></div></div>
+        <div class="k-row"><div class="k-ico">📞</div><div><div class="k-lbl">Telefon</div><div class="k-val">+43 664 950 7800</div></div></div>
+        <div class="k-row"><div class="k-ico">✉️</div><div><div class="k-lbl">E-Mail</div><div class="k-val">office@kfz-fritsch.at</div></div></div>
       </div>
       <div class="oeffnung">
         <div class="oeffnung-title">Öffnungszeiten</div>
@@ -516,10 +470,7 @@ footer::before{content:'';position:absolute;inset:0;pointer-events:none;backgrou
     </div>
     <div class="map-side rev-r">
       <div class="map-wrap">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.4!2d14.6488!3d47.3384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476fb4b2b2e5f0a7%3A0x9c5e3b1234abc567!2sBundesstra%C3%9Fe%2019%2C%208770%20Sankt%20Michael%20in%20der%20Obersteiermark!5e0!3m2!1sde!2sat!4v1712700000000!5m2!1sde!2sat"
-          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.4!2d14.6488!3d47.3384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476fb4b2b2e5f0a7%3A0x9c5e3b1234abc567!2sBundesstra%C3%9Fe%2019%2C%208770%20Sankt%20Michael%20in%20der%20Obersteiermark!5e0!3m2!1sde!2sat!4v1712700000000!5m2!1sde!2sat" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
